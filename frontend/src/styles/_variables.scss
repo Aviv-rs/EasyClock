@@ -1,0 +1,27 @@
+// COLOR PALETTE
+$clr-primary: #0761dc;
+$clr-hover: lighten($clr-primary, 10%);
+$clr-link: #0761dc;
+$clr-gray-100: #3C3C43;
+$clr-soft-black:rgba(0,0,0,0.5);
+
+// SPACING
+$gap-20: 20px;
+$gap-30: 30px;
+
+$font: 'heebo';
+
+// SIZING
+$h1: 1.8rem;
+$h2: 1.5rem;
+$h3: 1.3rem;
+$h4: 1.15rem;
+$header-height: 90px;
+
+// LAYOUT
+$layoutPadding: 20px;
+
+// LAYOUT BREAKPOINTS
+$site-width-sm: 640px;
+$site-width-md: 810px;
+$site-width: 1440px;

@@ -1,0 +1,143 @@
+/* Util classes */
+.link{color: $clr-link;text-decoration: underline;}
+.hover_link{
+  &:hover{color: $clr-link;text-decoration: underline;}
+}
+
+.btn{padding: 10px; border: none; border-radius: 4px; color: #fff; font-size: 16px; cursor: pointer;background-color: $clr-primary;transition: background-color .25s;
+  &.wide{width: 100%;}
+  &:hover{background-color: $clr-hover;}
+  
+}
+
+.centered{margin: 0 auto;max-width: $site-width;
+  &[data-size=md]{max-width: $site-width-md;}
+}
+.site_bg{background-image: url(../assets/images/hero-bg.jpg);background-size: cover;background-repeat: no-repeat;filter: blur(10px);position: absolute;inset: 0;opacity: 80%;background-attachment: fixed;}
+.page{min-height: 100vh;}
+
+.flex{display: flex;}
+.align_center{align-items: center;}
+.justify_center{justify-content: center;}
+.relative{position: relative;}
+
+.logo{color: $clr-primary;display: flex;font-size: $h1;font-weight: 800;
+  .logo_pic{background-image: url(../assets/icons/clock.png);background-size: contain;background-repeat: no-repeat;width: 40px;height: 40px;}  
+}
+
+.content{position: relative;z-index: 10;height: 100%;}
+
+@font-face {
+  font-family: $font;
+  src: url('../assets/fonts/heebo/Heebo-VariableFont_wght.ttf') format('truetype');
+  font-weight: 100 800;
+  font-display: swap;
+}
+
+#app[data-dir="rtl"]{direction: rtl;text-align: right;}
+
+h1{font-size: $h1;}
+h2{font-size: $h2;}
+h3{font-size: $h3;}
+h4{font-size: $h4;}
+
+/* Remove default browser rules */
+a{color: inherit;text-decoration: none;}
+
+/* Box sizing rules */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Remove default padding */
+ul[class],
+ol[class] {
+  padding: 0;
+}
+
+/* Remove default margin */
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+ul[class],
+ol[class],
+li,
+figure,
+figcaption,
+blockquote,
+dl,
+dd {
+  margin: 0;
+  font-weight: normal;
+}
+
+/* Set core body defaults */
+body {
+  min-height: 100vh;
+  scroll-behavior: smooth;
+  text-rendering: optimizeSpeed;
+  line-height: 1.5;
+  font-size: calc(15px + 0.390625vw);
+  font-family: $font;
+}
+
+/* Remove list styles on ul, ol elements with a class attribute */
+ul[class],
+ol[class] {
+  list-style: none;
+}
+
+/* A elements that don't have a class get default styles */
+a:not([class]) {
+  text-decoration-skip-ink: auto;
+}
+
+/* Make images easier to work with */
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* Natural flow and rhythm in articles by default */
+article > * + * {
+  margin-top: 1em;
+}
+
+/* Inherit fonts for inputs and buttons */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/* Remove all animations and transitions for people that prefer not to see them */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+
+// HEADER 
+header#main_header{padding: 0 $gap-20;height: $header-height;background-color: $clr-gray-100;z-index: 999;position: relative;color: #fff;
+    .header_inner{display: flex;height: 100%;
+        
+        #user_area{margin-inline-start: auto;
+          .user_actions{display: flex;align-items: center;white-space: nowrap;
+              .seperator{height: 30px;margin: 0 10px;width: 1px;background-color: #fff;}
+          }
+        }
+    }
+}
+
+// FOOTER
+#main_footer{background-color: rgba($color: #fff, $alpha: 0.5);text-align: center;}
