@@ -64,11 +64,20 @@ async function endShift(req, res) {
 async function editShift(req, res) {
     try {
         let { timeEnded, timeStarted, shiftId } = req.body;
-        const { userId } = req;
+        let { userId, isAdmin } = req;
+
+        // In case someone is trying to edit another user's shifts, must have admin perms though
+        const { userId: otherUserId } = req.body;
 
         logger.debug('Trying to edit shift, user ID: ', userId, " time Started: ", timeStarted, " time Ended: ", timeEnded, " shift id: ", shiftId);
+
         if(!userId || !timeEnded || !timeStarted || +shiftId < 1) throw "userID, shiftID or end time not provided!";
         
+        if(otherUserId && otherUserId !== userId) {
+            if(isAdmin) userId = otherUserId;
+            else throw new Error('Only admins can edit other users shifts');
+        }
+
         const isValidShiftTimes = utilService.compareTimeStrings(timeStarted, timeEnded);
 
         if(!isValidShiftTimes) throw "Invalid shift times!";
@@ -79,22 +88,25 @@ async function editShift(req, res) {
         
         const shiftIdx = user.shifts.findIndex(shift=>shift.id === shiftId);
 
-        if(shiftIdx === -1) throw "Shift not found, invalid shiftID";
+        if(shiftIdx === -1) throw new Error("Shift not found, invalid shiftID");
 
         let shiftToUpdate = user.shifts[shiftIdx];
         const hourRegex = /\d{2}:\d{2}:\d{2}/;
         const timeStartedParsed = timeStarted;
         const timeEndedParsed = timeEnded;
+        
         timeStarted = shiftToUpdate.timeStarted.replace(hourRegex, timeStarted);
         timeEnded = shiftToUpdate.timeEnded.replace(hourRegex, timeEnded);
 
-        shiftToUpdate = {...user.shifts[shiftIdx], timeStarted, timeEnded};
+        user.shifts[shiftIdx] = {...shiftToUpdate, timeStarted, timeEnded};
+
+        console.log(shiftToUpdate);
 
         userService.update(user.id, 'shifts', user.shifts);
 
         res.json({...shiftToUpdate, timeStartedParsed, timeEndedParsed, dateStarted: utilService.getFormattedDate(timeStarted)});
     } catch (err) {
-        logger.error('cannot edit shift', err);
+        logger.error('cannot edit shift', err.message);
         res.status(500).send({ err: 'Failed to edit shift' });
 
     }
@@ -119,8 +131,35 @@ async function getUserShifts(req, res) {
             return shift;
         }));
     } catch (err) {
-        logger.error('cannot end shift', err);
-        res.status(500).send({ err: 'Failed to end shift' });
+        logger.error('Could not get user shifts', err);
+        res.status(500).send({ err: 'Could not get user shifts' });
+
+    }
+}
+
+async function getUserShiftsById(req, res) {
+    try {
+        const { isAdmin } = req;
+        const { userId } = req.body;
+
+        logger.debug('Trying to get user shifts, user ID: ', userId);
+        if(!userId) throw new Error("userID not provided!");
+        if(!isAdmin) throw new Error("Must have admin perms to fetch other user shifts!");
+        
+        const user = await userService.getById(userId);
+        
+        if(!user) throw new Error("Invalid user ID");
+
+        res.json(user.shifts.map(shift=>{
+            shift.dateStarted = utilService.getFormattedDate(shift.timeStarted);
+            shift.timeStartedParsed = shift.timeStarted.substr(11, 8);
+            shift.timeEndedParsed = shift.timeEnded.substr(11, 8);
+
+            return shift;
+        }));
+    } catch (err) {
+        logger.error('Could not get user shifts', err.message);
+        res.status(500).send({ err: 'Could not get user shifts' });
 
     }
 }
@@ -131,5 +170,6 @@ module.exports = {
     startShift,
     endShift,
     getUserShifts,
+    getUserShiftsById,
     editShift
 }

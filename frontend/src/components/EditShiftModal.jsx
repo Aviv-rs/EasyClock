@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { utilService } from '../services/utilService';
 
 
-const EditShiftModal = ({ shift, setIsModalOpen, updateShifts}) => {
+const EditShiftModal = ({ shift, setIsModalOpen, updateShifts, userId = null}) => {
   
   const modalRef = useRef();
 
@@ -33,7 +33,11 @@ const EditShiftModal = ({ shift, setIsModalOpen, updateShifts}) => {
     if(!isValidShiftTimes) alert('Shift start time must be earlier than shift end time!');
 
     try {
-      const updatedShift = await utilService.ajax('shift/edit', 'PUT', {...shiftDetails, shiftId: shift.id});
+      const shiftData = {...shiftDetails, shiftId: shift.id};
+
+      if(userId) shiftData.userId = userId; // In case of admin edit
+
+      const updatedShift = await utilService.ajax('shift/edit', 'PUT', shiftData);
       updateShifts(updatedShift);
       setIsModalOpen(false);
     } catch (err){

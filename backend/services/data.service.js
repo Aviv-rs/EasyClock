@@ -24,7 +24,7 @@ function getAll() {
 
 function getById(id) {
     const data = readData();
-    return data.find(user => user.id === id);
+    return data.find(user => +user.id === +id);
 }
 
 function getByUsername(username) {

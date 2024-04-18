@@ -7,13 +7,13 @@
       {
         "id": 1,
         "timeStarted": "2024-04-17T19:25:46.654701+02:00",
-        "timeEnded": "2024-04-17T23:25:44.224441+02:00",
+        "timeEnded": "2024-04-17T20:25:44.224441+02:00",
         "userId": 1
       },
       {
         "id": 2,
         "timeStarted": "2024-04-17T19:25:44.980032+02:00",
-        "timeEnded": "2024-04-17T20:25:57.750349+02:00",
+        "timeEnded": "2024-04-17T23:25:57.750349+02:00",
         "userId": 1
       },
       {
@@ -38,7 +38,14 @@
     "username": "admin",
     "password": "$2b$10$THuUyFfJH1wY1v9jJe6/v.k3PCsyo8zAV9om4Ej2shQtWD7xHLXMG",
     "name": "Adminovich",
-    "perms": "user",
-    "shifts": []
+    "perms": "admin",
+    "shifts": [
+      {
+        "id": 1,
+        "timeStarted": "2024-04-18T14:29:59.363875+02:00",
+        "timeEnded": "2024-04-18T15:30:04.933887+02:00",
+        "userId": 4
+      }
+    ]
   }
 ]

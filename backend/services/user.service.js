@@ -14,6 +14,20 @@ async function getById(userId) {
     }
 }
 
+async function getSafeUsers() {
+    try {
+        let users = dataService.getAll().map(user=>{
+            const {id, name} = user;
+            return {id, name};
+        });
+
+        return users;
+    } catch (err) {
+        logger.error(`while finding user ${userId}`, err)
+        throw err
+    }
+}
+
 async function getByUsername(username) {
     try {
         const user = dataService.getByUsername(username);
@@ -48,10 +62,9 @@ async function update(userId, property, value) {
         const userToUpdate = await dataService.getById(userId);
         if(!userToUpdate[property]) throw "invalid property!";
         userToUpdate[property] = value;
+        const isUpdateSuccessful = dataService.update(userToUpdate.id, userToUpdate);
         
-        const addedUser = dataService.update(userToUpdate.id, userToUpdate);
-
-        return addedUser;
+        return isUpdateSuccessful;
     } catch (err) {
         logger.error('cannot update user', err)
         throw err
@@ -61,6 +74,7 @@ async function update(userId, property, value) {
 
 module.exports = {
     getById,
+    getSafeUsers,
     getByUsername,
     add,
     update

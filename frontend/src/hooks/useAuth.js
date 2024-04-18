@@ -4,17 +4,19 @@ import { utilService } from '../services/utilService';
 // Custom hook for authentication
 const useAuth = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [localUser, setLocalUser] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const checkAuthentication = async () => {
         const loginToken = utilService.getCookie('loginToken');
         if(loginToken){
-
           try {
             const result = await utilService.ajax('auth/check', 'GET');
             if(result && result.id && !result.err) {
-              sessionStorage.setItem('loggedInUser', JSON.stringify(result)) ;
+              setIsAdmin(()=>result.perms === 'admin');
+              sessionStorage.setItem('loggedInUser', JSON.stringify(result));
               setIsAuthenticated(true);
               setIsLoading(false);
             }
@@ -33,7 +35,7 @@ const useAuth = () => {
     checkAuthentication();
   }, []);
 
-  return { isAuthenticated, isLoading };
+  return { isAuthenticated, isAdmin, isLoading, localUser };
 };
 
 export default useAuth;

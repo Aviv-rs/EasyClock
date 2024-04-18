@@ -34,6 +34,7 @@ const LoginSignupForm = () => {
     try {
       const res = await utilService.ajax('auth/' + endpoint, 'POST', credentials);
       if(res.err) return alert(res.err);
+      sessionStorage.setItem('loggedInUser', JSON.stringify(res));
       navigate('clock');
     } catch (err){
       console.error(err);

@@ -5,12 +5,13 @@ import ShiftList from "../components/ShiftList";
 import { utilService } from "../services/utilService";
 import useAuth from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import AdminShiftList from "../components/AdminShiftList ";
 
 const ClockView = () => {
         const [time, setTime] = useState(null);
         const [shifts, setShifts] = useState([]);
 
-        const { isAuthenticated, isLoading } = useAuth();
+        const { isAuthenticated, isAdmin, isLoading } = useAuth();
   
         const navigate = useNavigate();
       
@@ -18,7 +19,7 @@ const ClockView = () => {
           if(!isAuthenticated && !isLoading) return navigate('/');
           else if (isAuthenticated && !isLoading) {
               getTimeFromAPI();
-              getUserShifts();
+              if(!isAdmin) getUserShifts(); // admin shifts are handled in the AdminShiftList component
           }
       
         }, [isAuthenticated, isLoading]);
@@ -51,7 +52,11 @@ const ClockView = () => {
                     {time && time.currTimeStr && <DigitalClock customText="Current time (GER)" customHour={time.currTimeStr}/>}
 
                     <ShiftBtn/>
+                    {isAdmin ? 
+                    <AdminShiftList />
+                    :
                     <ShiftList updateShifts={updateShifts} shifts={shifts}/>
+                    }
                 </div>
             </div>
         );

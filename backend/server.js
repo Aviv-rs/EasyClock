@@ -23,9 +23,11 @@ app.use(cookieParser());
 
 const authRoutes = require('./api/auth/auth.routes');
 const shiftRoutes = require('./api/shift/shift.routes');
+const userRoutes = require('./api/user/user.routes');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/shift', shiftRoutes);
+app.use('/api/user', userRoutes);
 
 http.listen(port, () => {
   console.log(`Server listening on port ${port}`);
