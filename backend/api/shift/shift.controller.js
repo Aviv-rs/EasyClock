@@ -61,6 +61,26 @@ async function endShift(req, res) {
 
     }
 }
+async function getActiveShift(req, res) {
+    try {
+        const { userId } = req;
+
+        logger.debug('Trying to find active shift, user ID: ', userId);
+        if(!userId) throw "userID not provided!";
+        
+        const user = await userService.getById(userId);
+        
+        if(!user) throw "Invalid user ID";
+        
+        const activeShift = user.shifts.find(shift=>!shift.timeEnded);
+
+        res.json(activeShift);
+    } catch (err) {
+        logger.error('cannot end shift', err);
+        res.status(500).send({ err: 'Failed to end shift' });
+
+    }
+}
 async function editShift(req, res) {
     try {
         let { timeEnded, timeStarted, shiftId } = req.body;
@@ -125,8 +145,8 @@ async function getUserShifts(req, res) {
 
         res.json(user.shifts.map(shift=>{
             shift.dateStarted = utilService.getFormattedDate(shift.timeStarted);
-            shift.timeStartedParsed = shift.timeStarted.substr(11, 8);
-            shift.timeEndedParsed = shift.timeEnded.substr(11, 8);
+            if(shift.timeStarted) shift.timeStartedParsed = shift.timeStarted.substr(11, 8);
+            if(shift.timeEnded) shift.timeEndedParsed = shift.timeEnded.substr(11, 8);
 
             return shift;
         }));
@@ -152,8 +172,9 @@ async function getUserShiftsById(req, res) {
 
         res.json(user.shifts.map(shift=>{
             shift.dateStarted = utilService.getFormattedDate(shift.timeStarted);
-            shift.timeStartedParsed = shift.timeStarted.substr(11, 8);
-            shift.timeEndedParsed = shift.timeEnded.substr(11, 8);
+            if(shift.timeStarted) shift.timeStartedParsed = shift.timeStarted.substr(11, 8);
+            if(shift.timeEnded) shift.timeEndedParsed = shift.timeEnded.substr(11, 8);
+            
 
             return shift;
         }));
@@ -171,5 +192,6 @@ module.exports = {
     endShift,
     getUserShifts,
     getUserShiftsById,
+    getActiveShift,
     editShift
 }

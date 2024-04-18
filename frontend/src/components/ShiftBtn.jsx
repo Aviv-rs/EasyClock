@@ -14,6 +14,30 @@ const ShiftBtn = () => {
     return timeData;
   };
 
+  const checkForActiveShift = async () => {
+        try {
+            const activeShift = await utilService.ajax('shift/getActive');
+            console.log(activeShift);
+            if(activeShift && activeShift.id > 0){
+                const shiftStartTime = new Date(activeShift.timeStarted).getTime();
+                const now = new Date().getTime();
+                const activeShiftElapsedTime = now - shiftStartTime;
+                console.log();
+                setElapsedTime(()=>activeShiftElapsedTime);
+                setStartTime(now - activeShiftElapsedTime);
+                setIsRunning(true);
+                setCurrShift(()=>activeShift);
+            }
+        } catch (error) {
+            alert('Error, could not get active shift');
+        }
+   };
+
+   useEffect(() => {
+        checkForActiveShift();
+    }, []);
+  
+
   useEffect(() => {
     let interval;
 
@@ -68,9 +92,11 @@ const handleShiftEnd = async () => {
 
 
   return (
-    <div className="shift-btn">
-      <div className="timer">{utilService.formatTime(isRunning ? new Date().getTime() - startTime : elapsedTime)}</div>
-      <button className='btn wide' onClick={handleStartStop}>{isRunning ? 'End shift' : 'Start a new shift'}</button>
+    <div className="shift_btn_wrapper">
+      <button className={`${isRunning ? 'active' : ''} btn wide btn_toggle_shift`} onClick={handleStartStop}>
+        <h2>{isRunning ? 'End shift' : 'Start a new shift'}</h2> 
+        <div className="timer">{utilService.formatTime(isRunning ? new Date().getTime() - startTime : elapsedTime)}</div>
+      </button>
     </div>
   );
 };

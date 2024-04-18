@@ -1,3 +1,5 @@
+@import './variables';
+
 .shift_list { font-family: Arial, sans-serif;
   
     h2 { font-size: 1.5rem; margin-bottom: 1rem; }
@@ -17,3 +19,15 @@
   .modal_content{max-width: 400px; width: 100%; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); background-color: #fff; position: absolute;left: 50%;top: 50%;transform: translate(-50%, -50%);}
 }
   
+.shift_btn_wrapper{margin-bottom: $gap-20;
+  .btn_toggle_shift{height: 300px;width: 300px;margin: 0 auto; display: flex;align-items: center;justify-content: center;flex-direction: column;border-radius: 100%;border: 4px solid $clr-primary;background-color: $clr-primary;transition: all .25s;
+
+    h2{font-size: 2rem;}
+
+    &.active{background-color: transparent;}
+
+    .timer{font-size: $h2;}
+    
+  }
+
+}
