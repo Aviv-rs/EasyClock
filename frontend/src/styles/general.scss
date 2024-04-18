@@ -16,13 +16,12 @@
   &[data-size=md]{max-width: $site-width-md;}
 }
 .site_bg{background-image: url(../assets/images/hero-bg.jpg);background-size: cover;background-repeat: no-repeat;filter: blur(10px);position: absolute;inset: 0;opacity: 80%;background-attachment: fixed;}
-.page{min-height: 100vh;}
+.page{min-height: 100vh;padding: 30px;}
 
 .flex{display: flex;}
 .align_center{align-items: center;}
 .justify_center{justify-content: center;}
 .relative{position: relative;}
-.pt30{padding-top: 30px;}
 
 .logo{color: $clr-primary;display: flex;font-size: $h1;font-weight: 800;
   .logo_pic{background-image: url(../assets/icons/clock.png);background-size: contain;background-repeat: no-repeat;width: 40px;height: 40px;}  
