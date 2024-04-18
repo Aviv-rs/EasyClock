@@ -1,0 +1,97 @@
+[
+  {
+    "username": "user1",
+    "password": "$2b$12$kzImIdGrXuCcZBCuDMSduOyytqxz6RvldKZToftkCFHGLfKivFO0q",
+    "name": "Aviv",
+    "shifts": [
+      {
+        "id": 1,
+        "timeStarted": "2024-04-17T19:25:46.654701+02:00",
+        "timeEnded": "2024-04-17T20:25:44.224441+02:00",
+        "userId": 1
+      },
+      {
+        "id": 2,
+        "timeStarted": "2024-04-17T19:25:44.980032+02:00",
+        "timeEnded": "2024-04-17T23:25:57.750349+02:00",
+        "userId": 1
+      },
+      {
+        "id": 3,
+        "timeStarted": "2024-04-17T20:01:15.565935+02:00",
+        "timeEnded": "2024-04-17T20:01:25.699649+02:00",
+        "userId": 1
+      }
+    ],
+    "id": 1
+  },
+  {
+    "id": 3,
+    "username": "user2",
+    "password": "$2b$12$LAISZlP9RO1xpTQ5chAgz.0nSAHGcs.uhju17RwbtF0.hCfQwOKry",
+    "name": "Ofir",
+    "perms": "user",
+    "shifts": [
+      {
+        "id": 1,
+        "timeStarted": "2024-04-18T16:12:23.586278+02:00",
+        "timeEnded": null,
+        "userId": 3
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "username": "admin",
+    "password": "$2b$10$THuUyFfJH1wY1v9jJe6/v.k3PCsyo8zAV9om4Ej2shQtWD7xHLXMG",
+    "name": "Adminovich",
+    "perms": "admin",
+    "shifts": [
+      {
+        "id": 1,
+        "timeStarted": "2024-04-18T14:29:59.363875+02:00",
+        "timeEnded": "2024-04-18T15:30:04.933887+02:00",
+        "userId": 4
+      },
+      {
+        "id": 2,
+        "timeStarted": "2024-04-18T15:45:55.646888+02:00",
+        "timeEnded": "2024-04-18T15:49:58.023119+02:00",
+        "userId": 4
+      },
+      {
+        "id": 3,
+        "timeStarted": "2024-04-18T15:51:49.472383+02:00",
+        "timeEnded": "2024-04-18T15:52:25.004815+02:00",
+        "userId": 4
+      },
+      {
+        "id": 4,
+        "timeStarted": "2024-04-18T15:56:00.024510+02:00",
+        "timeEnded": "2024-04-18T15:56:06.103481+02:00",
+        "userId": 4
+      },
+      {
+        "id": 5,
+        "timeStarted": "2024-04-18T16:00:22.292574+02:00",
+        "timeEnded": null,
+        "userId": 4
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "username": "user3",
+    "password": "$2b$10$ap/HXScRXoPkhcYvMMp..unmx9Cq0yF1F4hdryS3kL/pB1LFVaojm",
+    "name": "Yarden",
+    "perms": "user",
+    "shifts": [
+      {
+        "id": 1,
+        "timeStarted": "2024-04-18T17:02:04.186446+02:00",
+        "timeEnded": "2024-04-18T18:02:33.528125+02:00",
+        "userId": 5
+      }
+    ]
+  }
+]
