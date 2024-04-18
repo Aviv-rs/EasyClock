@@ -60,7 +60,7 @@ const AdminShiftList = () => {
         <span>Selected user shifts: </span>
         {users && users.length > 0 && <select onChange={handleUserSelect} name="user_select" id="user_select">
           {users.map((user)=>{
-            return <option key={user.id} value={user.id}>{user.id === localUser.id ? 'My shifts' : user.name}</option>
+            return <option style={user.id === localUser.id ? {color: 'red'} : {}} key={user.id} value={user.id}>{user.id === localUser.id ? 'My shifts' : user.name}</option>
           })}
         </select>}
       </div>
