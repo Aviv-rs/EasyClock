@@ -29,7 +29,6 @@ function getById(id) {
 
 function getByUsername(username) {
     const data = readData();
-    console.log('data: ', data);
     return data.find(user => user.username === username);
 }
 

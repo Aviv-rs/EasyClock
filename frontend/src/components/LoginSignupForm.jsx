@@ -1,34 +1,19 @@
 import { useEffect, useState } from 'react';
 import { utilService } from '../services/utilService';
 import { useNavigate } from 'react-router-dom';
+import useAuth from "../hooks/useAuth";
 
 
 const LoginSignupForm = () => {
   const [isLogin, setIsLogin] = useState(true);
+  const { isAuthenticated, isLoading } = useAuth();
   
   const navigate = useNavigate();
 
   useEffect(() => {
-    async function checkAuth(){
+    if(isAuthenticated && !isLoading) navigate('/clock');
 
-      const loginToken = utilService.getCookie('loginToken');
-      if(loginToken){
-        try {
-          const result = await utilService.ajax('auth/check', 'GET');
-          if(result && result.id && !result.err) {
-            sessionStorage.setItem('loggedInUser', JSON.stringify(result)) ;
-            navigate('/clock');
-          }
-          
-        } catch (err) {
-          
-        }
-      }
-    }
-
-    checkAuth();
-
-  }, []);
+  }, [isAuthenticated]);
   
 
   const toggleForm = () => {
@@ -36,7 +21,6 @@ const LoginSignupForm = () => {
   };
 
   const handleSubmit = async (ev) => {
-    ev.preventDefault();
     const data = new FormData(ev.currentTarget)
 
     const credentials = {
@@ -48,8 +32,8 @@ const LoginSignupForm = () => {
     const endpoint = isLogin ? 'login' : 'signup';
 
     try {
-      await utilService.ajax('auth/' + endpoint, 'POST', credentials);
-
+      const res = await utilService.ajax('auth/' + endpoint, 'POST', credentials);
+      if(res.err) return alert(res.err);
       navigate('clock');
     } catch (err){
       console.error(err);
@@ -57,15 +41,19 @@ const LoginSignupForm = () => {
 
   };
 
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div id="login_signup_form" className="container">
       <div className="form_container">
         <h2>{isLogin ? 'Login' : 'Sign Up'}</h2>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={(ev)=>{ev.preventDefault();handleSubmit(ev);}}>
           {!isLogin && <p className="required_text">*All fields are required</p>}
           {!isLogin && <input required type="text" name="name" placeholder="Name" />}
-          <input required type="text" placeholder="Username" name="username" />
-          <input required type="password" placeholder="Password" name="password" />
+          <input id="username" required type="text" placeholder="Username" name="username" />
+          <input id="password" required type="password" placeholder="Password" name="password" />
           <button className="btn" type="submit">{isLogin ? 'Login' : 'Sign Up'}</button>
         </form>
         <p className="toggle_signup" onClick={toggleForm}>{isLogin ? 'Create an account' : 'Already have an account? Login'}</p>

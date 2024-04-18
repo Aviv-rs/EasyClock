@@ -1,46 +1,67 @@
 require('dotenv').config();
 
-const Cryptr = require('cryptr')
-const cryptr = new Cryptr(process.env.CRYPTER_KEY)
+const crypto = require('crypto');
+const algorithm = 'aes-256-ctr';
+const ENCRYPTION_KEY = process.env.CRYPTER_KEY;
+const IV_LENGTH = 16;
+
 const userService = require('../../services/user.service');
 const logger = require('../../services/logger.service');
 const bcrypt = require('bcrypt');
 
 
 async function login(username, password) {
-  logger.debug(`auth.service - login with username: ${username}`);
+  try {
+    logger.debug(`auth.service - login with username: ${username}`);
 
-  const user = await userService.getByUsername(username);
-  if (!user) return Promise.reject('Invalid username or password');
-  const match = await bcrypt.compare(password, user.password);
-  if (!match) return Promise.reject('Invalid username or password');
+    const user = await userService.getByUsername(username);
+    if (!user) return Promise.reject('Invalid username or password');
+    const match = await bcrypt.compare(password.trim(), user.password.trim());
+    if (!match) return Promise.reject('Invalid username or password');
+    
+    delete user.password;
+    return user
+  } catch (error) {
+    logger.error('Failed to login ', error);
+    throw error;
+  }
 
-  delete user.password
-  return user
 }
 
 async function signup(username, password, name) {
+  logger.debug(`auth.service - signup with username: ${username}, name: ${name}`);
 
-  logger.debug(
-    `auth.service - signup with username: ${username}, name: ${name}`
-  );
+  if (!username || !password || !name) {
+    throw new Error("Name, username, and password are required!");
+  }
 
-  if (!username || !password || !name)
-    return Promise.reject('name, username and password are required!')
+  const isUsernameTaken = await userService.getByUsername(username);
+  if (isUsernameTaken) {
+    throw new Error("Username already taken!");
+  }
 
-  const salt = await bcrypt.genSalt(12);
-
-  const hash = await bcrypt.hash(password, salt)
-  return userService.add({ username, password: hash, name })
+  try {
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(password, salt);
+    return userService.add({ username, password: hash, name });
+  } catch (error) {
+    throw new Error("Error hashing password: " + error.message);
+  }
 }
 
+
 function getLoginToken(user) {
-  return cryptr.encrypt(JSON.stringify(user));
+  try {
+    return encrypt(JSON.stringify(user));
+  } catch (error) {
+    logger.error('Failed to get login token, ' + error.message);
+    console.log('error while fetching login token: ', error.message);
+  }
 }
 
 async function validateToken(loginToken) {
   try {
-    const json = cryptr.decrypt(loginToken);
+    const json = decrypt(loginToken);
     const user = JSON.parse(json);
     if(!user || !user.id || !user.username) throw 'Invalid login token';
     
@@ -51,6 +72,24 @@ async function validateToken(loginToken) {
   } catch (err) {
     throw 'Invalid login token';
   }
+}
+
+function encrypt(text) {
+  let iv = crypto.randomBytes(IV_LENGTH);
+  let cipher = crypto.createCipheriv(algorithm, Buffer.concat([Buffer.from(ENCRYPTION_KEY), Buffer.alloc(32)], 32), iv);
+  let encrypted = cipher.update(text);
+  encrypted = Buffer.concat([encrypted, cipher.final()]);
+  return iv.toString('hex') + ':' + encrypted.toString('hex');
+}
+
+function decrypt(text) {
+  let textParts = text.split(':');
+  let iv = Buffer.from(textParts.shift(), 'hex');
+  let encryptedText = Buffer.from(textParts.join(':'), 'hex');
+  let decipher = crypto.createDecipheriv(algorithm, Buffer.concat([Buffer.from(ENCRYPTION_KEY), Buffer.alloc(32)], 32), iv);
+  let decrypted = decipher.update(encryptedText);
+  decrypted = Buffer.concat([decrypted, decipher.final()]);
+  return decrypted.toString();
 }
 
 module.exports = {

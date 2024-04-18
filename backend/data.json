@@ -24,5 +24,21 @@
       }
     ],
     "id": 1
+  },
+  {
+    "id": 3,
+    "username": "user2",
+    "password": "$2b$12$LAISZlP9RO1xpTQ5chAgz.0nSAHGcs.uhju17RwbtF0.hCfQwOKry",
+    "name": "Ofir",
+    "perms": "user",
+    "shifts": []
+  },
+  {
+    "id": 4,
+    "username": "admin",
+    "password": "$2b$10$THuUyFfJH1wY1v9jJe6/v.k3PCsyo8zAV9om4Ej2shQtWD7xHLXMG",
+    "name": "Adminovich",
+    "perms": "user",
+    "shifts": []
   }
 ]

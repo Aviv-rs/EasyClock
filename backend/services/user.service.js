@@ -16,8 +16,7 @@ async function getById(userId) {
 
 async function getByUsername(username) {
     try {
-        const user = dataService.getByUsername(username)
-        console.log('username: ' + username);
+        const user = dataService.getByUsername(username);
         return user
     } catch (err) {
         logger.error(`while finding user ${username}`, err)
@@ -31,6 +30,7 @@ async function add(user) {
             username: user.username,
             password: user.password,
             name: user.name,
+            perms: 'user',
             shifts: []
         };
         
