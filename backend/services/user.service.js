@@ -2,12 +2,6 @@
 const dataService = require('./data.service')
 const logger = require('./logger.service')
 
-module.exports = {
-    getById,
-    getByUsername,
-    add
-} 
-
 async function getById(userId) {
     try {
         const user = dataService.getById(userId);
@@ -49,7 +43,25 @@ async function add(user) {
     }
 }
 
+async function update(userId, property, value) {
+    try {
+        const userToUpdate = await dataService.getById(userId);
+        if(!userToUpdate[property]) throw "invalid property!";
+        userToUpdate[property] = value;
+        
+        const addedUser = dataService.update(userToUpdate.id, userToUpdate);
+
+        return addedUser;
+    } catch (err) {
+        logger.error('cannot update user', err)
+        throw err
+    }
+}
 
 
-
-
+module.exports = {
+    getById,
+    getByUsername,
+    add,
+    update
+} 

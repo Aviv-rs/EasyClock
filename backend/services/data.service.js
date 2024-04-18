@@ -36,7 +36,10 @@ function getByUsername(username) {
 function create(newItem) {
     const data = readData();
     const id = data.length > 0 ? Math.max(...data.map(item => item.id)) + 1 : 1;
-    newItem.id = id;
+    newItem = {
+        id,
+        ...newItem
+    };
     data.push(newItem);
     writeData(data);
     return newItem;

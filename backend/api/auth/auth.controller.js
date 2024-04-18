@@ -10,7 +10,7 @@ async function checkAuth(req, res) {
         res.json(user);
     } catch (err) {
         logger.error('Failed to Login ' + err);
-        res.clearCookie('loginToken');
+        if(loginToken) res.clearCookie('loginToken');
         res.status(401).send({err});
     }
 }

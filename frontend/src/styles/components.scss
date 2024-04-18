@@ -1,0 +1,19 @@
+.shift_list { font-family: Arial, sans-serif;
+  
+    h2 { font-size: 1.5rem; margin-bottom: 1rem; }
+  
+    .shift_table { width: 100%; overflow-x: auto; border-collapse: collapse; }
+  
+    .shift_heading { background-color: #f0f0f0; position: sticky; top: 0; z-index: 1; }
+  
+    .shift_row { display: flex; border-bottom: 1px solid #ccc; position: relative;}
+  
+    .start_date, .start_time, .end_time { flex: 1; text-align: center; padding: 0.5rem; }
+
+    .btn_edit_shift{position: absolute;transform: translateY(-50%);right: 0.5rem;top: 50%;}
+}
+
+.modal{inset: 0;position: fixed; background-color: rgb(0 0 0 / 70%); z-index: 9999;
+  .modal_content{max-width: 400px; width: 100%; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); background-color: #fff; position: absolute;left: 50%;top: 50%;transform: translate(-50%, -50%);}
+}
+  

@@ -4,11 +4,13 @@
   &:hover{color: $clr-link;text-decoration: underline;}
 }
 
-.btn{padding: 10px; border: none; border-radius: 4px; color: #fff; font-size: 16px; cursor: pointer;background-color: $clr-primary;transition: background-color .25s;
+.btn{padding: 10px; border: none; border-radius: 4px; color: #fff;  cursor: pointer;background-color: $clr-primary;transition: background-color .25s;
   &.wide{width: 100%;}
   &:hover{background-color: $clr-hover;}
   
 }
+
+.clean_btn{background-color: transparent;cursor: pointer;border: none;padding: 0;margin: 0;}
 
 .centered{margin: 0 auto;max-width: $site-width;
   &[data-size=md]{max-width: $site-width-md;}
@@ -25,7 +27,7 @@
   .logo_pic{background-image: url(../assets/icons/clock.png);background-size: contain;background-repeat: no-repeat;width: 40px;height: 40px;}  
 }
 
-.content{position: relative;z-index: 10;height: 100%;}
+.content{position: relative;z-index: 9999;height: 100%;}
 
 @font-face {
   font-family: $font;

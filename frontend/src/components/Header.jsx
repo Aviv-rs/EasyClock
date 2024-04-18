@@ -37,7 +37,7 @@ const Header = ({ routeList }) => {
             <div className="user_actions">
                 <span>Welcome, {user.name}</span>
                 <div className="seperator"></div>
-                <button onClick={logout}>Logout</button>
+                <button className="btn" onClick={logout}>Logout</button>
             </div>
         </div>
     </div>

@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 const LoginSignupForm = () => {
   const [isLogin, setIsLogin] = useState(true);
+  
   const navigate = useNavigate();
 
   useEffect(() => {
