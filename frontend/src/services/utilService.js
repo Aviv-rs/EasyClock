@@ -45,7 +45,7 @@ export const utilService = {
           return res.json();
         } catch (error) {
           console.log(error);
-          alert(error)
+          alert(error);
         }
 
     },

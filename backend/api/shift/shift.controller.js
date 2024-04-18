@@ -73,11 +73,11 @@ async function getActiveShift(req, res) {
         if(!user) throw "Invalid user ID";
         
         const activeShift = user.shifts.find(shift=>!shift.timeEnded);
-
-        res.json(activeShift);
+        
+        res.json(activeShift || null);
     } catch (err) {
-        logger.error('cannot end shift', err);
-        res.status(500).send({ err: 'Failed to end shift' });
+        logger.error('Failed to find active shift', err);
+        res.status(500).send({ err: 'Failed to find active shift' });
 
     }
 }

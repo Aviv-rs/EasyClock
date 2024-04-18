@@ -22,6 +22,7 @@
 .align_center{align-items: center;}
 .justify_center{justify-content: center;}
 .relative{position: relative;}
+.pt30{padding-top: 30px;}
 
 .logo{color: $clr-primary;display: flex;font-size: $h1;font-weight: 800;
   .logo_pic{background-image: url(../assets/icons/clock.png);background-size: contain;background-repeat: no-repeat;width: 40px;height: 40px;}  

@@ -22,7 +22,7 @@
 .shift_btn_wrapper{margin-bottom: $gap-20;
   .btn_toggle_shift{height: 300px;width: 300px;margin: 0 auto; display: flex;align-items: center;justify-content: center;flex-direction: column;border-radius: 100%;border: 4px solid $clr-primary;background-color: $clr-primary;transition: all .25s;
 
-    h2{font-size: 2rem;}
+    h2{font-size: 2rem;font-weight: bold;}
 
     &.active{background-color: transparent;}
 

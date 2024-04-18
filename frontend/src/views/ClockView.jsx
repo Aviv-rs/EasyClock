@@ -46,7 +46,7 @@ const ClockView = () => {
         }        
 
         return (
-            <div id="clock_view" className="page">
+            <div id="clock_view" className="page pt30">
                 <div className="site_bg"></div>
                 <div className="content centered" data-size="md">
                     {time && time.currTimeStr && <DigitalClock customText="Current time (GER)" customHour={time.currTimeStr}/>}
