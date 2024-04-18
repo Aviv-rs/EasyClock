@@ -30,14 +30,17 @@ const EditShiftModal = ({ shift, setIsModalOpen, updateShifts, userId = null}) =
 
     const isValidShiftTimes = utilService.compareTimeStrings(shiftDetails.timeStarted, shiftDetails.timeEnded) === -1;
 
-    if(!isValidShiftTimes) alert('Shift start time must be earlier than shift end time!');
+    if(!isValidShiftTimes) return alert('Shift start time must be earlier than shift end time!');
 
     try {
       const shiftData = {...shiftDetails, shiftId: shift.id};
+      let endpoint = 'shift/edit';
+      if(userId) {
+        shiftData.userId = userId; // In case of admin edit
+        endpoint = 'shift/editAdmin';
+      }
 
-      if(userId) shiftData.userId = userId; // In case of admin edit
-
-      const updatedShift = await utilService.ajax('shift/edit', 'PUT', shiftData);
+      const updatedShift = await utilService.ajax(endpoint, 'PUT', shiftData);
       updateShifts(updatedShift);
       setIsModalOpen(false);
     } catch (err){

@@ -35,7 +35,6 @@ async function requireAdmin(req, res, next) {
 
   } catch (err) {
       logger.error('Failed to authenticate user: ' + err.message);
-      if(loginToken) res.clearCookie('loginToken');
       res.status(401).send({err:err.message});
   }
 }

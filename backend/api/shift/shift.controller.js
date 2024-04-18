@@ -81,26 +81,19 @@ async function getActiveShift(req, res) {
 
     }
 }
+
 async function editShift(req, res) {
     try {
         let { timeEnded, timeStarted, shiftId } = req.body;
-        let { userId, isAdmin } = req;
-
-        // In case someone is trying to edit another user's shifts, must have admin perms though
-        const { userId: otherUserId } = req.body;
+        let { userId } = req;
 
         logger.debug('Trying to edit shift, user ID: ', userId, " time Started: ", timeStarted, " time Ended: ", timeEnded, " shift id: ", shiftId);
 
         if(!userId || !timeEnded || !timeStarted || +shiftId < 1) throw "userID, shiftID or end time not provided!";
-        
-        if(otherUserId && otherUserId !== userId) {
-            if(isAdmin) userId = otherUserId;
-            else throw new Error('Only admins can edit other users shifts');
-        }
 
-        const isValidShiftTimes = utilService.compareTimeStrings(timeStarted, timeEnded);
+        const isValidShiftTimes = utilService.compareTimeStrings(timeStarted, timeEnded) === -1;
 
-        if(!isValidShiftTimes) throw "Invalid shift times!";
+        if(!isValidShiftTimes) throw new Error("Invalid shift times!");
 
         const user = await userService.getById(userId);
         
@@ -120,7 +113,45 @@ async function editShift(req, res) {
 
         user.shifts[shiftIdx] = {...shiftToUpdate, timeStarted, timeEnded};
 
-        console.log(shiftToUpdate);
+        userService.update(user.id, 'shifts', user.shifts);
+
+        res.json({...shiftToUpdate, timeStartedParsed, timeEndedParsed, dateStarted: utilService.getFormattedDate(timeStarted)});
+    } catch (err) {
+        logger.error('cannot edit shift', err.message);
+        res.status(500).send({ err: 'Failed to edit shift' });
+
+    }
+}
+
+async function adminEditShift(req, res) {
+    try {
+        let { timeEnded, timeStarted, shiftId, userId } = req.body;
+
+        logger.debug('Trying to edit shift as admin, user ID: ', userId, " time Started: ", timeStarted, " time Ended: ", timeEnded, " shift id: ", shiftId);
+        
+        if(!userId || !timeEnded || !timeStarted || +shiftId < 1) throw "userID, shiftID or end time not provided!";
+
+        const isValidShiftTimes = utilService.compareTimeStrings(timeStarted, timeEnded);
+
+        if(!isValidShiftTimes) throw "Invalid shift times!";
+
+        const user = await userService.getById(userId);
+        
+        if(!user) throw new Error("Invalid user ID");
+        
+        const shiftIdx = user.shifts.findIndex(shift=>shift.id === shiftId);
+
+        if(shiftIdx === -1) throw new Error("Shift not found, invalid shiftID");
+
+        let shiftToUpdate = user.shifts[shiftIdx];
+        const hourRegex = /\d{2}:\d{2}:\d{2}/;
+        const timeStartedParsed = timeStarted;
+        const timeEndedParsed = timeEnded;
+        
+        timeStarted = shiftToUpdate.timeStarted.replace(hourRegex, timeStarted);
+        timeEnded = shiftToUpdate.timeEnded.replace(hourRegex, timeEnded);
+
+        user.shifts[shiftIdx] = {...shiftToUpdate, timeStarted, timeEnded};
 
         userService.update(user.id, 'shifts', user.shifts);
 
@@ -192,5 +223,6 @@ module.exports = {
     getUserShifts,
     getUserShiftsById,
     getActiveShift,
+    adminEditShift,
     editShift
 }

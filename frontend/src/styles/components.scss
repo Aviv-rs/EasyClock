@@ -8,7 +8,9 @@
   
     .shift_heading { background-color: #f0f0f0; position: sticky; top: 0; z-index: 1; }
   
-    .shift_row { display: flex; border-bottom: 1px solid #ccc; position: relative;}
+    .shift_row { display: flex; border-bottom: 1px solid #ccc; position: relative;
+      &:not(.shift_heading){color: #fff;}
+    }
   
     .start_date, .start_time, .end_time { flex: 1; text-align: center; padding: 0.5rem; }
 
