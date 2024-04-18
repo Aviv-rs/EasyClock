@@ -149,7 +149,7 @@ async function getUserShifts(req, res) {
             if(shift.timeEnded) shift.timeEndedParsed = shift.timeEnded.substr(11, 8);
 
             return shift;
-        }));
+        }).filter(shift=>shift.timeEnded));
     } catch (err) {
         logger.error('Could not get user shifts', err);
         res.status(500).send({ err: 'Could not get user shifts' });
@@ -174,10 +174,9 @@ async function getUserShiftsById(req, res) {
             shift.dateStarted = utilService.getFormattedDate(shift.timeStarted);
             if(shift.timeStarted) shift.timeStartedParsed = shift.timeStarted.substr(11, 8);
             if(shift.timeEnded) shift.timeEndedParsed = shift.timeEnded.substr(11, 8);
-            
 
             return shift;
-        }));
+        }).filter(shift=>shift.timeEnded));
     } catch (err) {
         logger.error('Could not get user shifts', err.message);
         res.status(500).send({ err: 'Could not get user shifts' });

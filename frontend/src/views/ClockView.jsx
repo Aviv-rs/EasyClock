@@ -49,7 +49,7 @@ const ClockView = () => {
             <div id="clock_view" className="page">
                 <div className="site_bg"></div>
                 <div className="content centered" data-size="md">
-                    {time && time.currTimeStr && <DigitalClock customText="Current time (GER)" customHour={time.currTimeStr}/>}
+                    {time && time.currTimeStr && <DigitalClock customHour={time.currTimeStr}/>}
 
                     <ShiftBtn/>
                     {isAdmin ? 

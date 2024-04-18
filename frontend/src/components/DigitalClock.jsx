@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const DigitalClock = ({ customHour, customText = '' }) => {
+const DigitalClock = ({ customHour}) => {
   const [initialCustomTime, setInitialCustomTime] = useState(null);
   const [elapsedTime, setElapsedTime] = useState(0);
 
@@ -25,7 +25,7 @@ const DigitalClock = ({ customHour, customText = '' }) => {
 
   return (
     <div className="digital_clock">
-      <span>{customText} {formattedTime}</span>
+      🕰️ <span>{formattedTime}</span>
     </div>
   );
 };
