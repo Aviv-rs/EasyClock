@@ -4,7 +4,6 @@ import { utilService } from '../services/utilService';
 // Custom hook for authentication
 const useAuth = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [localUser, setLocalUser] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -35,7 +34,7 @@ const useAuth = () => {
     checkAuthentication();
   }, []);
 
-  return { isAuthenticated, isAdmin, isLoading, localUser };
+  return { isAuthenticated, isAdmin, isLoading };
 };
 
 export default useAuth;
