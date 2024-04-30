@@ -16,6 +16,19 @@ const utilService = {
           return 0;
       }
     },
+    compareDateTimeStrings(DateTimeString1, DateTimeString2) {
+      const date1 = new Date(DateTimeString1);
+      const date2 = new Date(DateTimeString2);
+  
+      // Compare DateTime values
+      if (date1 < date2) {
+          return -1;
+      } else if (date1 > date2) {
+          return 1;
+      } else {
+          return 0;
+      }
+    },
     getFormattedDate(dateString){
       // Parse the date string
       const date = new Date(dateString);

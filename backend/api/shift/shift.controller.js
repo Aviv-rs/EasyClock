@@ -1,6 +1,8 @@
 const userService = require('../../services/user.service');
+const shiftService = require('./shift.service');
 const logger = require('../../services/logger.service');
 const utilService = require('../../services/utilService');
+
 
 async function startShift(req, res) {
     try {
@@ -54,7 +56,9 @@ async function endShift(req, res) {
 
         userService.update(user.id, 'shifts', user.shifts);
 
-        res.json(user.shifts[shiftIdx]);
+        const endedShift = await shiftService.getShiftParsed(user.shifts[shiftIdx]);
+
+        res.json(endedShift);
     } catch (err) {
         logger.error('cannot end shift', err);
         res.status(500).send({ err: 'Failed to end shift' });
@@ -169,18 +173,10 @@ async function getUserShifts(req, res) {
 
         logger.debug('Trying to get user shifts, user ID: ', userId);
         if(!userId) throw "userID not provided!";
-        
-        const user = await userService.getById(userId);
-        
-        if(!user) throw "Invalid user ID";
 
-        res.json(user.shifts.map(shift=>{
-            shift.dateStarted = utilService.getFormattedDate(shift.timeStarted);
-            if(shift.timeStarted) shift.timeStartedParsed = shift.timeStarted.substr(11, 8);
-            if(shift.timeEnded) shift.timeEndedParsed = shift.timeEnded.substr(11, 8);
+        const userShifts = await shiftService.getUserShifts(userId);
 
-            return shift;
-        }).filter(shift=>shift.timeEnded));
+        res.json(userShifts);
     } catch (err) {
         logger.error('Could not get user shifts', err);
         res.status(500).send({ err: 'Could not get user shifts' });
@@ -188,6 +184,7 @@ async function getUserShifts(req, res) {
     }
 }
 
+// admin function - get another user's shifts
 async function getUserShiftsById(req, res) {
     try {
         const { isAdmin } = req;
@@ -197,17 +194,9 @@ async function getUserShiftsById(req, res) {
         if(!userId) throw new Error("userID not provided!");
         if(!isAdmin) throw new Error("Must have admin perms to fetch other user shifts!");
         
-        const user = await userService.getById(userId);
-        
-        if(!user) throw new Error("Invalid user ID");
+        const userShifts = await shiftService.getUserShifts(userId);
 
-        res.json(user.shifts.map(shift=>{
-            shift.dateStarted = utilService.getFormattedDate(shift.timeStarted);
-            if(shift.timeStarted) shift.timeStartedParsed = shift.timeStarted.substr(11, 8);
-            if(shift.timeEnded) shift.timeEndedParsed = shift.timeEnded.substr(11, 8);
-
-            return shift;
-        }).filter(shift=>shift.timeEnded));
+        res.json(userShifts);
     } catch (err) {
         logger.error('Could not get user shifts', err.message);
         res.status(500).send({ err: 'Could not get user shifts' });
