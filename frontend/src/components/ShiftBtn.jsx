@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { utilService } from '../services/utilService';
 
-const ShiftBtn = () => {
+const ShiftBtn = ({updateShifts}) => {
   const [startTime, setStartTime] = useState(null);
   const [elapsedTime, setElapsedTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
@@ -17,12 +17,10 @@ const ShiftBtn = () => {
   const checkForActiveShift = async () => {
         try {
             const activeShift = await utilService.ajax('shift/getActive');
-            console.log(activeShift);
             if(activeShift && activeShift.id > 0){
                 const shiftStartTime = new Date(activeShift.timeStarted).getTime();
                 const now = new Date().getTime();
                 const activeShiftElapsedTime = now - shiftStartTime;
-                console.log();
                 setElapsedTime(()=>activeShiftElapsedTime);
                 setStartTime(now - activeShiftElapsedTime);
                 setIsRunning(true);
@@ -82,8 +80,9 @@ const handleShiftEnd = async () => {
 
     try {
         const timeEnded = await getTimeFromAPI();
-        const updatedShift = utilService.ajax('shift/end', 'POST', { timeEnded: timeEnded.datetime, shiftId: currShift.id });
+        const updatedShift = await utilService.ajax('shift/end', 'POST', { timeEnded: timeEnded.datetime, shiftId: currShift.id });
         setCurrShift(()=>updatedShift);
+        updateShifts(updatedShift, true);
 
     } catch {
         alert('Failed to save shift! please contact the web master')

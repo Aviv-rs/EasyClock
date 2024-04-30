@@ -38,11 +38,14 @@ const ClockView = () => {
             setShifts(()=>userShifts);
         };
 
-        const updateShifts = (updatedShift) =>{
-            setShifts((oldShifts)=>oldShifts.map((shift)=>{
-                if(shift.id === updatedShift.id) return updatedShift;
-                return shift;
-            }));
+        const updateShifts = (updatedShift, isAdd = false) =>{
+            setShifts((oldShifts)=>{
+                if(isAdd) return [updatedShift, ...oldShifts];
+                return oldShifts.map((shift)=>{
+                    if(shift.id === updatedShift.id) return updatedShift;
+                    return shift;
+                })
+            });
         }        
 
         return (
@@ -51,7 +54,7 @@ const ClockView = () => {
                 <div className="content centered" data-size="md">
                     {time && time.currTimeStr && <DigitalClock customHour={time.currTimeStr}/>}
 
-                    <ShiftBtn/>
+                    <ShiftBtn updateShifts={updateShifts}/>
                     {isAdmin ? 
                     <AdminShiftList />
                     :

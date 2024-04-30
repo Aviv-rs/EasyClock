@@ -7,9 +7,7 @@ const ShiftList = ({ shifts, updateShifts }) => {
 
   const editShift = (shift) => {
     setCurrShiftInEdit(shift);
-  }
-
-  
+  }  
 
   return (
     <div className="shift_list">
