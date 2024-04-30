@@ -3,9 +3,9 @@ import '../styles/components.scss'; // Import the SCSS file for styling
 import EditShiftModal from './EditShiftModal';
 import { utilService } from '../services/utilService';
 
-const localUser = JSON.parse(sessionStorage.getItem('loggedInUser'));
 
 const AdminShiftList = () => {
+  const localUser = JSON.parse(sessionStorage.getItem('loggedInUser'));
   const [currShiftInEdit, setCurrShiftInEdit] = useState(null);
   const [users, setUsers] = useState([]);
   const [shifts, setShifts] = useState([]);
