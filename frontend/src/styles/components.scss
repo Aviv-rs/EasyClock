@@ -20,6 +20,8 @@
 }
 
 .modal{inset: 0;position: fixed; background-color: rgb(0 0 0 / 70%); z-index: 9999;
+  .modal_title{color: #333;font-weight: bold;}
+  .form_group{margin-bottom: 10px;}
   .modal_content{max-width: 400px; width: 100%; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); background-color: #fff; position: absolute;left: 50%;top: 50%;transform: translate(-50%, -50%);}
 }
   

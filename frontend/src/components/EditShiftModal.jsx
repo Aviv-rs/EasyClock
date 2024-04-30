@@ -53,7 +53,7 @@ const EditShiftModal = ({ shift, setIsModalOpen, updateShifts, userId = null}) =
     <div className="modal" id="edit_shift_modal">    
       <div id="edit_shift_form" ref={modalRef} className="container modal_content">
         <div className="form_container">
-          <h2>Edit shift from {shift.dateStarted}</h2>
+          <h2 className="modal_title">Edit shift from {shift.dateStarted}</h2>
           <form onSubmit={handleSubmit}>
             <div className="form_group">
               <label htmlFor="timeStarted">Shift started: </label>
@@ -63,7 +63,7 @@ const EditShiftModal = ({ shift, setIsModalOpen, updateShifts, userId = null}) =
               <label htmlFor="timeStarted">Shift ended: </label>
               <input type="time" required step="1" defaultValue={shift.timeEndedParsed} name="timeEnded" id="timeEnded"/>
             </div>
-            <button className="btn" type="submit">Save</button>
+            <button className="btn wide" type="submit">Save</button>
           </form>
         </div>
       </div>
